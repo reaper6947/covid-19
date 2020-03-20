@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>corona cases</title>
+    <style>
+        body {
+            background-color: #173e43;
+        }
+
+        table {
+            background-color: #009688;
+            border-radius: "3px";
+
+        }
+        th{
+            position:sticky;
+        }
+ 
+    </style>
+</head>
+
+<body>
+
+
+
+
+    <div class="table-responsive" cellspacing="0">
+        <table border="1" align="center" class="all  table table-bordered">
+            <caption>
+                <h4>All</h4>
+            </caption>
+            <thead class="thead-dark">
+                <tr>
+                    <th>cases</th>
+                    <th>deaths</th>
+                    <th>recovered</th>
+                </tr>
+            </thead>
+            <tr>
+                <td><span id="cases"></span></td>
+                <td><span id="deaths"></span></td>
+                <td><span id="recovered"></span></td tr>
+        </table>
+    </div>
+    <div class="table-responsive" >
+        <table border="1" align="center" id="country" class="china table table-bordered ">
+            <div class="fixed-top">
+            <thead class="thead-dark fix">
+                <tr>
+                    <th style="position:sticky;">country</th>
+                    <th>total cases</th>
+                    <th>cases today </th>
+                    <th>deaths</th>
+                    <th>deaths today</th>
+                    <th>critical</th>
+                    <th>recovered</th>
+                    <th>active</th>
+                </tr>
+            </thead>
+        </div>
+        </table>
+    </div>
+
+
+
+
+    <script>
+        const countryAll = async () => {
+            const url = 'https://coronavirus-19-api.herokuapp.com/all'
+            
+            try {
+                const resp = await fetch(`${url}`);
+                if(resp == null){ resp = await fetch('https://coronavirus-tracker-api.herokuapp.com/v2/latest') }
+                const data = resp.json();
+                const { cases, deaths, recovered } = await data;
+                document.getElementById("cases").textContent = cases;
+                document.getElementById("recovered").textContent = recovered;
+                document.getElementById("deaths").textContent = deaths;
+                console.log();
+                return { cases, deaths, recovered } ;
+            } catch (err) { console.log(err) }
+        }
+
+        countryAll();
+
+         setInterval(countryAll, 1000);
+
+
+        const china = async () => {
+            try {
+                var data = await fetch("https://coronavirus-19-api.herokuapp.com/countries");
+                var respData = await data.json();
+                //           console.log(respData[1].country);
+            
+                for (var i = 0; i < 30; i++) {
+                    var { country, cases, todayCases, deaths, todayDeaths, recovered, active, critical } = respData[i];
+                 //   console.log(document.getElementById('country').childNodes.length);
+                    if(document.getElementById('country').childNodes.length < 4+i)
+                    {
+                    var tr  = document.createElement('tr');   
+                    var name = document.createElement('td');  name.textContent =  country;  tr.appendChild(name); name.id = `${country}`;
+                    var tcases = document.createElement('td');  tcases.textContent =  cases;  tr.appendChild(tcases); tcases.id = `${country}-cases`;
+                    var casest = document.createElement('td');  casest.textContent =  todayCases;  tr.appendChild(casest); casest.id = `${country}-tcases`;
+                    var deths = document.createElement('td');  deths.textContent =  deaths;  tr.appendChild(deths); deths.id = `${country}-deaths`;
+                    var dethst = document.createElement('td');  dethst.textContent =  todayDeaths;  tr.appendChild(dethst); dethst.id = `${country}-todayDeaths`;
+                    var crit = document.createElement('td');  crit.textContent =  critical;  tr.appendChild(crit); crit.id = `${country}-critical`;
+                    var rec = document.createElement('td');  rec.textContent =  recovered;  tr.appendChild(rec); rec.id = `${country}-recovered`;
+                    var act = document.createElement('td');  act.textContent =  active;  tr.appendChild(act); act.id = `${country}-active`;
+                    var final =  document.getElementById('country').appendChild(tr);
+                    
+                    }else if(document.getElementById('china')){
+                       
+                    var tcases = document.getElementById(`${country}-cases`).textContent =  cases;  
+                    var casest = document.getElementById(`${country}-tcases`).textContent =  todayCases;  
+                    var deths = document.getElementById(`${country}-deaths`).textContent =  deaths;  
+                    var dethst = document.getElementById(`${country}-todayDeaths`).textContent =  todayDeaths; 
+                    var crit = document.getElementById(`${country}-critical`).textContent =  critical;  
+                    var rec = document.getElementById(`${country}-recovered`).textContent =  recovered;  
+                    var act = document.getElementById(`${country}-active`).textContent =  active;  
+                    //var final =  document.getElementById('country').appendChild(tr);
+                     var final = {tcases,casest,deths,dethst,crit,rec,act};
+                    }
+                    
+                }
+                return final;
+            } catch (err) { console.log(err) }
+        }
+
+       // china(); china();
+//china();        
+        
+        setInterval(china, 1000);
+
+
+
+/*
+        <td id="cn">china</td>
+                <td id="cn-total-cases"> </td>
+                <td id="cn-cases-today"></td>
+                <td id="cn-deaths"></td>
+                <td id="cn-deaths-today"></td>
+                <td id="cn-critical"></td>
+                <td id="cn-recovered"></td>
+                <td id="cn-active"></td>
+                
+*/
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+       </body>
+
+</html>
