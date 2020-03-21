@@ -4,23 +4,28 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>corona cases</title>
     <style>
-        body {
+        body 
+        {
             background-color: #173e43;
         }
 
-        table {
+        table 
+        {
             background-color: #009688;
             border-radius: "3px";
 
         }
-        th{
+        th
+        {
             position:sticky;
+        }
+        td
+        {
+            text-align: center;
         }
  
     </style>
@@ -34,7 +39,7 @@
     <div class="table-responsive" cellspacing="0">
         <table border="1" align="center" class="all  table table-bordered">
             <caption>
-                <h4>All</h4>
+                <h4>Worldwide</h4>
             </caption>
             <thead class="thead-dark">
                 <tr>
@@ -50,11 +55,11 @@
         </table>
     </div>
     <div class="table-responsive" >
-        <table border="1" align="center" id="country" class="china table table-bordered ">
+        <table border="1" align="center" id="country-table" class="china table table-bordered ">
             <div class="fixed-top">
-            <thead class="thead-dark fix">
+            <thead class="thead-dark fix country-thead" id = "country-thead">
                 <tr>
-                    <th style="position:sticky;">country</th>
+                    <th>country</th>
                     <th>total cases</th>
                     <th>cases today </th>
                     <th>deaths</th>
@@ -64,7 +69,7 @@
                     <th>active</th>
                 </tr>
             </thead>
-        </div>
+            </div>
         </table>
     </div>
 
@@ -93,17 +98,33 @@
          setInterval(countryAll, 1000);
 
 
-        const china = async () => {
+        const country = async () => {
             try {
                 var data = await fetch("https://coronavirus-19-api.herokuapp.com/countries");
                 var respData = await data.json();
                 //           console.log(respData[1].country);
-            
+            const  tableInsert  = (country, cases, todayCases, deaths, todayDeaths, recovered, active, critical)=>{
+               let table = document.getElementById("country-table");
+               let row = table.insertRow();
+               let n_Cell =  row.insertCell(); n_Cell.textContent = country; n_Cell.id = `${country}`;
+               let c_Cell =  row.insertCell(); c_Cell.textContent = cases; c_Cell.id = `${country}-c`;
+               let tc_Cell =  row.insertCell(); tc_Cell.textContent = todayCases; tc_Cell.id = `${country}-tc`;
+               let d_Cell =  row.insertCell(); d_Cell.textContent = deaths; d_Cell.id = `${country}-d`;
+               let td_Cell =  row.insertCell(); td_Cell.textContent = todayDeaths; td_Cell.id = `${country}-td`;
+               let cr_Cell =  row.insertCell(); cr_Cell.textContent = critical; cr_Cell.id = `${country}-cr`;
+               let re_Cell =  row.insertCell(); re_Cell.textContent = recovered; re_Cell.id = `${country}-re`;
+               let a_Cell =  row.insertCell(); a_Cell.textContent = active; a_Cell.id = `${country}-a`;
+
+            }
+
                 for (var i = 0; i < 30; i++) {
                     var { country, cases, todayCases, deaths, todayDeaths, recovered, active, critical } = respData[i];
-                 //   console.log(document.getElementById('country').childNodes.length);
-                    if(document.getElementById('country').childNodes.length < 4+i)
+                  // console.log(document.getElementById('country-thead').childNodes.length);
+                    if(document.getElementById('country-thead').childNodes.length < 4+i)
                     {
+                    tableInsert(country, cases, todayCases, deaths, todayDeaths, recovered, active, critical);
+
+                     /*
                     var tr  = document.createElement('tr');   
                     var name = document.createElement('td');  name.textContent =  country;  tr.appendChild(name); name.id = `${country}`;
                     var tcases = document.createElement('td');  tcases.textContent =  cases;  tr.appendChild(tcases); tcases.id = `${country}-cases`;
@@ -113,17 +134,19 @@
                     var crit = document.createElement('td');  crit.textContent =  critical;  tr.appendChild(crit); crit.id = `${country}-critical`;
                     var rec = document.createElement('td');  rec.textContent =  recovered;  tr.appendChild(rec); rec.id = `${country}-recovered`;
                     var act = document.createElement('td');  act.textContent =  active;  tr.appendChild(act); act.id = `${country}-active`;
-                    var final =  document.getElementById('country').appendChild(tr);
+                    var final =  document.getElementById('country-table').appendChild(tr);
+                    */
+
                     
-                    }else if(document.getElementById('china')){
+                    }else if(document.getElementById('china-table')){
                        
-                    var tcases = document.getElementById(`${country}-cases`).textContent =  cases;  
-                    var casest = document.getElementById(`${country}-tcases`).textContent =  todayCases;  
-                    var deths = document.getElementById(`${country}-deaths`).textContent =  deaths;  
-                    var dethst = document.getElementById(`${country}-todayDeaths`).textContent =  todayDeaths; 
-                    var crit = document.getElementById(`${country}-critical`).textContent =  critical;  
-                    var rec = document.getElementById(`${country}-recovered`).textContent =  recovered;  
-                    var act = document.getElementById(`${country}-active`).textContent =  active;  
+                    var tcases = document.getElementById(`${country}-c`).textContent =  cases;  
+                    var casest = document.getElementById(`${country}-tc`).textContent =  todayCases;  
+                    var deths = document.getElementById(`${country}-d`).textContent =  deaths;  
+                    var dethst = document.getElementById(`${country}-td`).textContent =  todayDeaths; 
+                    var crit = document.getElementById(`${country}-cr`).textContent =  critical;  
+                    var rec = document.getElementById(`${country}-re`).textContent =  recovered;  
+                    var act = document.getElementById(`${country}-a`).textContent =  active;  
                     //var final =  document.getElementById('country').appendChild(tr);
                      var final = {tcases,casest,deths,dethst,crit,rec,act};
                     }
@@ -134,9 +157,9 @@
         }
 
        // china(); china();
-//china();        
-        
-        setInterval(china, 1000);
+        //country();        
+
+        setInterval(country, 1000);
 
 
 
