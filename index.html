@@ -84,19 +84,7 @@
                     {
                     tableInsert(country, cases, todayCases, deaths, todayDeaths, recovered, active, critical);
 
-                     /*
-                    var tr  = document.createElement('tr');   
-                    var name = document.createElement('td');  name.textContent =  country;  tr.appendChild(name); name.id = `${country}`;
-                    var tcases = document.createElement('td');  tcases.textContent =  cases;  tr.appendChild(tcases); tcases.id = `${country}-cases`;
-                    var casest = document.createElement('td');  casest.textContent =  todayCases;  tr.appendChild(casest); casest.id = `${country}-tcases`;
-                    var deths = document.createElement('td');  deths.textContent =  deaths;  tr.appendChild(deths); deths.id = `${country}-deaths`;
-                    var dethst = document.createElement('td');  dethst.textContent =  todayDeaths;  tr.appendChild(dethst); dethst.id = `${country}-todayDeaths`;
-                    var crit = document.createElement('td');  crit.textContent =  critical;  tr.appendChild(crit); crit.id = `${country}-critical`;
-                    var rec = document.createElement('td');  rec.textContent =  recovered;  tr.appendChild(rec); rec.id = `${country}-recovered`;
-                    var act = document.createElement('td');  act.textContent =  active;  tr.appendChild(act); act.id = `${country}-active`;
-                    var final =  document.getElementById('country-table').appendChild(tr);
-                    */
-
+                   
                     
                     }else if(document.getElementById('china-table')){
                        
@@ -116,24 +104,10 @@
             } catch (err) { console.log(err) }
         }
 
-       // china(); china();
-        //country();        
-
+        
         setInterval(country, 1000);
 
 
-
-/*
-        <td id="cn">china</td>
-                <td id="cn-total-cases"> </td>
-                <td id="cn-cases-today"></td>
-                <td id="cn-deaths"></td>
-                <td id="cn-deaths-today"></td>
-                <td id="cn-critical"></td>
-                <td id="cn-recovered"></td>
-                <td id="cn-active"></td>
-                
-*/
     </script>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
