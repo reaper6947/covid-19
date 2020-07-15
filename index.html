@@ -36,24 +36,7 @@
 
 
 
-    <div class="table-responsive" cellspacing="0">
-        <table border="1" align="center" class="all  table table-bordered">
-            <caption>
-                <h4>Worldwide</h4>
-            </caption>
-            <thead class="thead-dark">
-                <tr>
-                    <th>cases</th>
-                    <th>deaths</th>
-                    <th>recovered</th>
-                </tr>
-            </thead>
-            <tr>
-                <td><span id="cases"></span></td>
-                <td><span id="deaths"></span></td>
-                <td><span id="recovered"></span></td tr>
-        </table>
-    </div>
+    
     <div class="table-responsive" >
         <table border="1" align="center" id="country-table" class="china table table-bordered ">
             <div class="fixed-top">
@@ -73,31 +56,8 @@
         </table>
     </div>
 
-
-
-
     <script>
-        const countryAll = async () => {
-            const url = 'https://coronavirus-19-api.herokuapp.com/all'
-            
-            try {
-                const resp = await fetch(`${url}`);
-                if(resp == null){ resp = await fetch('https://coronavirus-tracker-api.herokuapp.com/v2/latest') }
-                const data = resp.json();
-                const { cases, deaths, recovered } = await data;
-                document.getElementById("cases").textContent = cases;
-                document.getElementById("recovered").textContent = recovered;
-                document.getElementById("deaths").textContent = deaths;
-                console.log();
-                return { cases, deaths, recovered } ;
-            } catch (err) { console.log(err) }
-        }
-
-        countryAll();
-
-         setInterval(countryAll, 1000);
-
-
+      
         const country = async () => {
             try {
                 var data = await fetch("https://coronavirus-19-api.herokuapp.com/countries");
@@ -117,7 +77,7 @@
 
             }
 
-                for (var i = 0; i < 30; i++) {
+                for (var i = 0; i < respData.length; i++) {
                     var { country, cases, todayCases, deaths, todayDeaths, recovered, active, critical } = respData[i];
                   // console.log(document.getElementById('country-thead').childNodes.length);
                     if(document.getElementById('country-thead').childNodes.length < 4+i)
